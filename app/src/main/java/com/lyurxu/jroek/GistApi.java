@@ -6,7 +6,7 @@ import retrofit2.http.GET;
 
 public interface GistApi {
 
-    @GET(CNSTN.DB_6_E_47_RAW_EGYPT_RICHES)
+    @GET(CNSTN.GistLink)
     Call<ResponseBody> getStringUrl();
 
 }

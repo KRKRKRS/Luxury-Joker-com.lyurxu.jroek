@@ -1,7 +1,5 @@
 package com.lyurxu.jroek;
 
-import androidx.annotation.Nullable;
-
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.applinks.AppLinkData;
@@ -14,8 +12,15 @@ import java.io.IOException;
 public class F_B_K {
     public static String strDeep;
     public static String AD_ID;
+    private String fbId;
+    private LJ mainActivity;
 
-    F_B_K(String fbId, LJ mainActivity) {
+    public F_B_K(String fbId, LJ mainActivity) {
+        this.fbId = fbId;
+        this.mainActivity = mainActivity;
+    }
+
+    public void init () {
         FacebookSdk.setApplicationId(fbId);
         FacebookSdk.setAdvertiserIDCollectionEnabled(true);
         FacebookSdk.sdkInitialize(mainActivity.getApplicationContext());

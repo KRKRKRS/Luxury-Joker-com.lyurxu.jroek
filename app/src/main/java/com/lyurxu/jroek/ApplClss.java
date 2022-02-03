@@ -1,5 +1,7 @@
 package com.lyurxu.jroek;
 
+import static com.lyurxu.jroek.ParseStr.decode;
+
 import android.app.Application;
 import android.util.Log;
 
@@ -11,18 +13,16 @@ import java.util.Map;
 import java.util.Objects;
 
 public class ApplClss extends Application {
-    public static boolean afLoaded;
 
     @Override
     public void onCreate() {
         super.onCreate();
         OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
         OneSignal.initWithContext(this);
-        OneSignal.setAppId(CNSTN.decode(CNSTN.OneSignalId));
-
+        OneSignal.setAppId(decode(CNSTN.OneSignalId));
 
         MyAppsFlyerListener MAF = new MyAppsFlyerListener();
-        AppsFlyerLib.getInstance().init(CNSTN.decode(CNSTN.AFKey), MAF, this);
+        AppsFlyerLib.getInstance().init(decode(CNSTN.AFKey), MAF, this);
         AppsFlyerLib.getInstance().start(this);
         LJ.AppsFl_Id = AppsFlyerLib.getInstance().getAppsFlyerUID(this);
     }
@@ -32,31 +32,31 @@ public class ApplClss extends Application {
         @Override
         public void onConversionDataSuccess(Map<String, Object> map) {
             for (String attrName : map.keySet())
-                LJ.statusAppsFlyer = Objects.requireNonNull(map.get(CNSTN.decode("YWZfc3RhdHVz"))).toString();
-            if (LJ.statusAppsFlyer.equals(CNSTN.decode("Tm9uLW9yZ2FuaWM="))) {
-                String campaignStr = Objects.requireNonNull(map.get(CNSTN.decode("Y2FtcGFpZ24="))).toString();
+                LJ.statusAppsFlyer = Objects.requireNonNull(map.get(decode("YWZfc3RhdHVz"))).toString();
+            if (LJ.statusAppsFlyer.equals(decode("Tm9uLW9yZ2FuaWM="))) {
+                String campaignStr = Objects.requireNonNull(map.get(decode("Y2FtcGFpZ24="))).toString();
                 ParseStr parserStr = new ParseStr();
-                LJ.strAppsFlyeretgpy = parserStr.parse(campaignStr);
+                LJ.strAppsFlyer = parserStr.parse(campaignStr);
             }
-            afLoaded = true;
+            LJ.afLoaded = true;
         }
 
         @Override
         public void onConversionDataFail(String s) {
             Log.i("MyApp", "AppsFl onConversionDataFail " + s);
-            afLoaded = true;
+            LJ.afLoaded = true;
         }
 
         @Override
         public void onAppOpenAttribution(Map<String, String> map) {
             Log.i("MyApp", "AppsFl onAppOpenAttribution");
-            afLoaded = true;
+            LJ.afLoaded = true;
         }
 
         @Override
         public void onAttributionFailure(String s) {
             Log.i("MyApp", "AppsFl onAttributionFailure" + s);
-            afLoaded = true;
+            LJ.afLoaded = true;
         }
     }
 }
