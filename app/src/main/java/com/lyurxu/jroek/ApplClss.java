@@ -20,6 +20,7 @@ public class ApplClss extends Application {
         OneSignal.initWithContext(this);
         OneSignal.setAppId(CNSTN.decode(CNSTN.OneSignalId));
 
+
         MyAppsFlyerListener MAF = new MyAppsFlyerListener();
         AppsFlyerLib.getInstance().init(CNSTN.decode(CNSTN.AFKey), MAF, this);
         AppsFlyerLib.getInstance().start(this);

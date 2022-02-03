@@ -1,8 +1,5 @@
 package com.lyurxu.jroek;
 
-import android.os.Handler;
-import android.widget.ProgressBar;
-
 import androidx.annotation.Nullable;
 
 import com.facebook.FacebookSdk;
@@ -25,33 +22,29 @@ public class F_B_K {
         FacebookSdk.fullyInitialize();
         FacebookSdk.setAutoInitEnabled(true);
         FacebookSdk.setAutoLogAppEventsEnabled(true);
-
         AppEventsLogger.activateApp(mainActivity.getApplication());
 
-        AppLinkData.fetchDeferredAppLinkData(mainActivity.getApplication(), new AppLinkData.CompletionHandler() {
-            @Override
-            public void onDeferredAppLinkDataFetched(@Nullable AppLinkData appLinkData) {
-                String deepLink = appLinkData.getTargetUri().getQuery();
+        AppLinkData.fetchDeferredAppLinkData(mainActivity.getApplication(), appLinkData -> {
+            String deepLink = appLinkData.getTargetUri().getQuery();
 
-                ParseStr parserStr = new ParseStr();
-                new Thread(new Runnable() {
-                    public void run() {
-                        try {
-                            AD_ID = AdvertisingIdClient.getAdvertisingIdInfo(mainActivity.getBaseContext()).getId();
+            ParseStr parserStr = new ParseStr();
+            new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        AD_ID = AdvertisingIdClient.getAdvertisingIdInfo(mainActivity.getBaseContext()).getId();
 
-                            do {} while (AD_ID == null);
-                            strDeep = parserStr.parse(deepLink);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (GooglePlayServicesNotAvailableException e) {
-                            e.printStackTrace();
-                        } catch (GooglePlayServicesRepairableException e) {
-                            e.printStackTrace();
-                        }
+                        do {} while (AD_ID == null);
+                        strDeep = parserStr.parse(deepLink);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (GooglePlayServicesNotAvailableException e) {
+                        e.printStackTrace();
+                    } catch (GooglePlayServicesRepairableException e) {
+                        e.printStackTrace();
                     }
-                }).start();
-            }
                 }
+            }).start();
+        }
         );
     }
 }
