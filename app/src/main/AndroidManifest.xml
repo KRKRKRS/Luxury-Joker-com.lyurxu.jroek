@@ -29,15 +29,19 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-6740256099993452~3507678543" />
+            android:value="ca-app-pub-6740256099945434~3507678543" />
 
         <activity
             android:name=".MMyGameActivity"
             android:exported="false" />
         <activity
             android:name=".LJ"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|navigation|orientation|screenLayout|screenSize|smallestScreenSize|uiMode|touchscreen"
             android:exported="true">
             <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />

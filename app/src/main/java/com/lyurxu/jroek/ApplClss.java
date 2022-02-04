@@ -7,8 +7,12 @@ import android.util.Log;
 
 import com.appsflyer.AppsFlyerConversionListener;
 import com.appsflyer.AppsFlyerLib;
+import com.google.android.gms.ads.identifier.AdvertisingIdClient;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.onesignal.OneSignal;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.Objects;
 
@@ -17,10 +21,17 @@ public class ApplClss extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        OnSInt();
+        ApsFlInt();
+    }
+
+    private void OnSInt() {
         OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
         OneSignal.initWithContext(this);
         OneSignal.setAppId(decode(CNSTN.OneSignalId));
+    }
 
+    private void ApsFlInt() {
         MyAppsFlyerListener MAF = new MyAppsFlyerListener();
         AppsFlyerLib.getInstance().init(decode(CNSTN.AFKey), MAF, this);
         AppsFlyerLib.getInstance().start(this);
@@ -34,9 +45,8 @@ public class ApplClss extends Application {
             for (String attrName : map.keySet())
                 LJ.statusAppsFlyer = Objects.requireNonNull(map.get(decode("YWZfc3RhdHVz"))).toString();
             if (LJ.statusAppsFlyer.equals(decode("Tm9uLW9yZ2FuaWM="))) {
-                String campaignStr = Objects.requireNonNull(map.get(decode("Y2FtcGFpZ24="))).toString();
                 ParseStr parserStr = new ParseStr();
-                LJ.strAppsFlyer = parserStr.parse(campaignStr);
+                LJ.strAppsFlyer = parserStr.parse(Objects.requireNonNull(map.get(decode("Y2FtcGFpZ24="))).toString());
             }
             LJ.afLoaded = true;
         }

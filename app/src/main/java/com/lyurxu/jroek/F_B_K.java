@@ -20,7 +20,37 @@ public class F_B_K {
         this.mainActivity = mainActivity;
     }
 
-    public void init () {
+    public void init() {
+        initFcbk();
+
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    AD_ID = AdvertisingIdClient.getAdvertisingIdInfo(mainActivity.getBaseContext()).getId();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+        AppLinkData.fetchDeferredAppLinkData(mainActivity.getApplication(), new AppLinkData.CompletionHandler() {
+                    @Override
+                    public void onDeferredAppLinkDataFetched(AppLinkData appLinkData) {
+                        String deepLink = appLinkData.getTargetUri().getQuery();
+
+                        ParseStr parserStr = new ParseStr();
+                        do {
+                        } while (AD_ID == null);
+                        strDeep = parserStr.parse(deepLink);
+                    }
+                }
+        );
+
+    }
+    private void initFcbk() {
         FacebookSdk.setApplicationId(fbId);
         FacebookSdk.setAdvertiserIDCollectionEnabled(true);
         FacebookSdk.sdkInitialize(mainActivity.getApplicationContext());
@@ -28,28 +58,5 @@ public class F_B_K {
         FacebookSdk.setAutoInitEnabled(true);
         FacebookSdk.setAutoLogAppEventsEnabled(true);
         AppEventsLogger.activateApp(mainActivity.getApplication());
-
-        AppLinkData.fetchDeferredAppLinkData(mainActivity.getApplication(), appLinkData -> {
-            String deepLink = appLinkData.getTargetUri().getQuery();
-
-            ParseStr parserStr = new ParseStr();
-            new Thread(new Runnable() {
-                public void run() {
-                    try {
-                        AD_ID = AdvertisingIdClient.getAdvertisingIdInfo(mainActivity.getBaseContext()).getId();
-
-                        do {} while (AD_ID == null);
-                        strDeep = parserStr.parse(deepLink);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (GooglePlayServicesNotAvailableException e) {
-                        e.printStackTrace();
-                    } catch (GooglePlayServicesRepairableException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
-        }
-        );
     }
 }

