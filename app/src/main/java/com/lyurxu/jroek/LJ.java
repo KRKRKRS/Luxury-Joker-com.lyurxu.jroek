@@ -1,6 +1,5 @@
 package com.lyurxu.jroek;
 
-import static com.lyurxu.jroek.F_B_K.AD_ID;
 import static com.lyurxu.jroek.F_B_K.strDeep;
 import static com.lyurxu.jroek.ParseStr.decode;
 
@@ -48,8 +47,11 @@ public class LJ extends AppCompatActivity {
     public static String statusAppsFlyer;
     public static String strAppsFlyer;
     public static String AppsFl_Id;
-    public static boolean afLoaded;
+    public static boolean afLoaded = false;
     public static boolean adIdInited;
+
+    public static String AD_ID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,7 @@ public class LJ extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         progressBar = findViewById(R.id.progressBar);
 
-        if (devModeOff()) {
+        if (!devModeOff()) {    // TODO delete !
             webView = findViewById(R.id.webView);
             setWebView(webView);
 
@@ -82,25 +84,17 @@ public class LJ extends AppCompatActivity {
 
                             sPrefs = getSharedPreferences("bXlXZWJWaWV3UHJlZnM=", Context.MODE_PRIVATE);
                             link = sPrefs.getString(URL_SHARED_PREF, null);
-
-//                            do {} while (!(afLoaded & AD_ID != null));
-//                            startWebView(offer);
-
                             // TODO uncomment
 //                            if (link != null) {
 //                                webView.loadUrl(link);
 //                            } else {
-//                                do {
-//                                }
-//                                while (!(afLoaded & adIdInited));
-
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
                                         startWebView(offer);
                                     }
                                 },5000);
-  //                          }
+//                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

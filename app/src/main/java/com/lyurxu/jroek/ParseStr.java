@@ -1,6 +1,6 @@
 package com.lyurxu.jroek;
 
-import static com.lyurxu.jroek.F_B_K.AD_ID;
+import static com.lyurxu.jroek.LJ.AD_ID;
 import static com.lyurxu.jroek.LJ.AppsFl_Id;
 import static com.lyurxu.jroek.LJ.keyDefault;
 
@@ -32,7 +32,7 @@ public class ParseStr {
     String parseOrganic(String input) {
         return input + keyDefault +
                 decode("P2J1bmRsZT0=") + "com.lyurxu.jroek" +
-                decode("JmFkX2lkPQ==") + F_B_K.AD_ID +
+                decode("JmFkX2lkPQ==") + AD_ID +
                 decode("JmFwcHNfaWQ9") + AppsFl_Id +
                 decode("JmRldl9rZXk9") + decode(CNSTN.AFKey);
     }

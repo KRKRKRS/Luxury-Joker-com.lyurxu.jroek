@@ -23,6 +23,22 @@ public class ApplClss extends Application {
         super.onCreate();
         OnSInt();
         ApsFlInt();
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+                    LJ.AD_ID = AdvertisingIdClient.getAdvertisingIdInfo(getBaseContext()).getId();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.i("MyApp", e.toString());
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    e.printStackTrace();
+                    Log.i("MyApp", e.toString());
+                } catch (GooglePlayServicesRepairableException e) {
+                    e.printStackTrace();
+                    Log.i("MyApp", e.toString());
+                }
+            }
+        }).start();
     }
 
     private void OnSInt() {

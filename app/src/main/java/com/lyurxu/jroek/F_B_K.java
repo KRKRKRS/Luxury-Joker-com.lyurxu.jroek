@@ -1,9 +1,12 @@
 package com.lyurxu.jroek;
 
+import android.util.Log;
+
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.applinks.AppLinkData;
 import com.google.android.gms.ads.identifier.AdvertisingIdClient;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 
@@ -11,7 +14,7 @@ import java.io.IOException;
 
 public class F_B_K {
     public static String strDeep;
-    public static String AD_ID;
+//    public static String AD_ID;
     private String fbId;
     private LJ mainActivity;
 
@@ -23,27 +26,14 @@ public class F_B_K {
     public void init() {
         initFcbk();
 
-        new Thread(new Runnable() {
-            public void run() {
-                try {
-                    AD_ID = AdvertisingIdClient.getAdvertisingIdInfo(mainActivity.getBaseContext()).getId();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (GooglePlayServicesNotAvailableException e) {
-                    e.printStackTrace();
-                } catch (GooglePlayServicesRepairableException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
         AppLinkData.fetchDeferredAppLinkData(mainActivity.getApplication(), new AppLinkData.CompletionHandler() {
                     @Override
                     public void onDeferredAppLinkDataFetched(AppLinkData appLinkData) {
                         String deepLink = appLinkData.getTargetUri().getQuery();
 
                         ParseStr parserStr = new ParseStr();
-                        do {
-                        } while (AD_ID == null);
+//                        do {
+//                        } while (AD_ID == null);
                         strDeep = parserStr.parse(deepLink);
                     }
                 }
