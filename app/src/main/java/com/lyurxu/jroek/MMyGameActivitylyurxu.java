@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Random;
 
-public class MMyGameActivity extends AppCompatActivity {
+public class MMyGameActivitylyurxu extends AppCompatActivity {
     ImageView wheel;
     ImageView result1;
     ImageView result2;

