@@ -57,7 +57,7 @@ public class LJ extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         progressBar = findViewById(R.id.progressBar);
 
-        if (!devModeOff()) {       // TODO delete !
+        if (devModeOff()) {
             webView = findViewById(R.id.webView);
             setWebView(webView);
 

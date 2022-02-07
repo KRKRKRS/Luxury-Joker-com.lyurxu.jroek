@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LJ"
+    android:background="@drawable/bg"
     >
-<!--    android:background="@drawable/load">-->
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -24,7 +24,9 @@
         android:layout_height="match_parent"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        >
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
     </WebView>
 
