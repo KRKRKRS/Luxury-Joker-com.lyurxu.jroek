@@ -21,11 +21,12 @@ public class MMyGameActivitylyurxu extends AppCompatActivity {
     ImageView result4;
     ImageView result5;
     TextView textView;
+
     Button btnStart;
     boolean isSpinning;
     float[] sectors = {45f, 90f, 135f, 180f, 225f, 270f, 315f, 360f};
     int[] results = {R.drawable.d2, R.drawable.d3, R.drawable.d4, R.drawable.d5, R.drawable.d6, R.drawable.d7, R.drawable.d8, R.drawable.d1};
-    String [] texts = {"Golden Slumbers", "Strawberry Fields Forever", "Come together", "Watermelon Sugar", "The Sugar Plum Fairy", " Lemon Tree", "Ah, girl", "Watching The Wheels"};
+    String[] texts = {"Golden Slumbers", "Strawberry Fields Forever", "Come together", "Watermelon Sugar", "The Sugar Plum Fairy", " Lemon Tree", "Ah, girl", "Watching The Wheels"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

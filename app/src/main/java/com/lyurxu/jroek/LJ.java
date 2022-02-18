@@ -180,7 +180,7 @@ public class LJ extends AppCompatActivity {
             webViewlyurxu.setVisibility(View.VISIBLE);
             progressBarlyurxu.setVisibility(ProgressBar.INVISIBLE);
 
-            if (url.contains(decodlyurxue("NDA0"))) {
+            if (url.contains(decodlyurxue("Z2FwcHM9NDA0"))) {
                 goToGamelyurxu();
                 finish();
             }

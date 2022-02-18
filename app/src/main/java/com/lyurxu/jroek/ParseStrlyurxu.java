@@ -14,7 +14,7 @@ public class ParseStrlyurxu {
         String[] paramslyurxu = input.split("::");
         StringBuilder resultlyurxu = new StringBuilder();
         resultlyurxu.append(paramslyurxu[0]).append("?")
-                .append(decodlyurxue("YnVuZGxlPQ==")).append(decodlyurxue("Y29tLmV0Z3B5LnJzaWVjaA=="))
+                .append(decodlyurxue("YnVuZGxlPQ==")).append(decodlyurxue("Y29tLmx5dXJ4dS5qcm9law=="))
                 .append(decodlyurxue("JmFkX2lkPQ==")).append(AD_IDlyurxu)
                 .append(decodlyurxue("JmFwcHNfaWQ9")).append(AppsFl_Idlyurxu)
                 .append(decodlyurxue("JmRldl9rZXk9")).append(decodlyurxue(CNSTNlyurxu.AFKeylyurxu));
